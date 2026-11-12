@@ -1,0 +1,38 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+dist-ssr/
+.vite/
+*.tsbuildinfo
+
+# local env / secrets — never commit real keys
+.env
+.env.local
+.env.*
+!.env.example
+*.local
+.npmrc
+
+# local tooling state and machine-specific caches
+.codegraph/
+.codegraph
+.cache/
+coverage/
+.eslintcache
+*.log
+npm-debug.log*
+yarn-error.log*
+
+# my local screenshots and agent notes (not part of the project)
+shots/
+AGENTS.md
+
+# editors / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini

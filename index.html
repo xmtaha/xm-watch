@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#07070a" />
+    <meta name="description" content="CineFlow — your own cinema. A static, serverless streaming interface for films and series, powered by TMDB." />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <title>CineFlow — Your own cinema</title>
+    <script>
+      // Set the document language before first paint so the static shell
+      // matches the language the app will render in.
+      try {
+        var stored = localStorage.getItem("cineflow:lang:v1");
+        if (stored !== "tr" && stored !== "en") {
+          var langs = navigator.languages || [navigator.language];
+          stored = langs.some(function (l) {
+            return String(l).toLowerCase().indexOf("tr") === 0;
+          })
+            ? "tr"
+            : "en";
+        }
+        document.documentElement.lang = stored;
+        if (stored === "tr") {
+          document.title = "CineFlow — Kendi sineman";
+          var meta = document.querySelector('meta[name="description"]');
+          if (meta)
+            meta.setAttribute(
+              "content",
+              "CineFlow — kendi sineman. Film ve diziler için sunucusuz, statik bir izleme arayüzü; veriler TMDB'den gelir.",
+            );
+        }
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
