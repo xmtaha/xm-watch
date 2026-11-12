@@ -6,6 +6,7 @@ import Browse from "./pages/Browse";
 import SearchPage from "./pages/Search";
 import TitlePage from "./pages/TitlePage";
 import Library from "./pages/Library";
+import Picker from "./pages/Picker";
 import Settings from "./pages/Settings";
 import Watch from "./pages/Watch";
 import NotFound from "./pages/NotFound";
@@ -23,6 +24,7 @@ export default function App() {
             <Route path="series" element={<Browse type="tv" />} />
             <Route path="search" element={<SearchPage />} />
             <Route path="library" element={<Library />} />
+            <Route path="pick" element={<Picker />} />
             <Route path="settings" element={<Settings />} />
             <Route path="title/:type/:id" element={<TitlePage />} />
             <Route path="*" element={<NotFound />} />

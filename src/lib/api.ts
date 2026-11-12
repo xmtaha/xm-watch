@@ -100,7 +100,15 @@ async function home(): Promise<HomeResponse> {
 
 async function discover(
   type: MediaType,
-  params: { page?: number; genre?: string; sort?: string; year?: string; rating?: string },
+  params: {
+    page?: number;
+    genre?: string;
+    sort?: string;
+    year?: string;
+    rating?: string;
+    runtimeGte?: number;
+    runtimeLte?: number;
+  },
 ): Promise<Page<Title>> {
   const page = intOf(params.page ?? 1, "page", 1, 500);
   if (isDemo()) {
@@ -112,6 +120,8 @@ async function discover(
     sort: params.sort ?? "popularity",
     year: params.year ?? "",
     rating: params.rating ?? "",
+    runtimeGte: params.runtimeGte ?? 0,
+    runtimeLte: params.runtimeLte ?? 0,
   });
 }
 

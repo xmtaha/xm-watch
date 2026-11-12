@@ -10,6 +10,7 @@ const LINKS: { to: string; key: MessageKey }[] = [
   { to: "/films", key: "nav.films" },
   { to: "/series", key: "nav.series" },
   { to: "/library", key: "nav.library" },
+  { to: "/pick", key: "nav.pick" },
 ];
 
 export function Header() {

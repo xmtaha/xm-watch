@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { Bookmark, Clapperboard, Home, Tv } from "lucide-react";
+import { Bookmark, Clapperboard, Dices, Home, Tv } from "lucide-react";
 
 import { useT, type MessageKey } from "../lib/i18n";
 
@@ -8,6 +8,7 @@ const ITEMS: { to: string; key: MessageKey; icon: typeof Home; end?: boolean }[]
   { to: "/films", key: "nav.films", icon: Clapperboard },
   { to: "/series", key: "nav.series", icon: Tv },
   { to: "/library", key: "nav.library", icon: Bookmark },
+  { to: "/pick", key: "nav.pick", icon: Dices },
 ];
 
 export function MobileNav() {
@@ -17,7 +18,7 @@ export function MobileNav() {
       className="glass fixed inset-x-0 bottom-0 z-50 border-t border-white/[0.07] pb-[env(safe-area-inset-bottom)] md:hidden"
       aria-label={t("nav.menu")}
     >
-      <div className="grid grid-cols-4">
+      <div className="grid grid-cols-5">
         {ITEMS.map(({ to, key, icon: Icon, end }) => (
           <NavLink
             key={to}

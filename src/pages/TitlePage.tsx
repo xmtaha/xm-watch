@@ -92,6 +92,7 @@ export default function TitlePage() {
   const watchedEpisodes = regularSeasons.reduce((sum, s) => sum + countWatchedEpisodes(watchedSet, s.season, s.episodes), 0);
   const totalEpisodes = regularSeasons.reduce((sum, s) => sum + s.episodes, 0);
   const seriesWatched = Boolean(item && totalEpisodes > 0 && watchedEpisodes >= totalEpisodes);
+  const seriesPct = totalEpisodes > 0 ? Math.round((watchedEpisodes / totalEpisodes) * 100) : 0;
 
   const markEpisode = async (episode: number, next: boolean, duration: number) => {
     if (!item) return;
@@ -209,6 +210,8 @@ export default function TitlePage() {
 
   const validSeasons = item.seasonList?.filter((s) => s.season > 0) ?? [];
   const currentSeason = validSeasons.find((s) => s.season === season);
+  const seasonSeen = countWatchedEpisodes(watchedSet, currentSeason?.season ?? season, currentSeason?.episodes ?? 0);
+  const currentSeasonPct = currentSeason && currentSeason.episodes > 0 ? Math.round((seasonSeen / currentSeason.episodes) * 100) : 0;
 
   return (
     <article>
@@ -317,8 +320,11 @@ export default function TitlePage() {
                 )}
               </div>
               {item.type === "tv" && totalEpisodes > 0 && (
-                <p className="mt-3 text-xs text-muted">
-                  {t("title.watchedProgress", { watched: watchedEpisodes, total: totalEpisodes })}
+                <p className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted">
+                  <span>{t("title.watchedProgress", { watched: watchedEpisodes, total: totalEpisodes })}</span>
+                  <span className="rounded-full border border-white/10 px-1.5 py-0.5 text-[10px] text-cream/70">
+                    {t("title.percent", { percent: seriesPct })}
+                  </span>
                 </p>
               )}
             </div>
@@ -394,6 +400,7 @@ export default function TitlePage() {
                   {validSeasons.map((s) => {
                     const seen = countWatchedEpisodes(watchedSet, s.season, s.episodes);
                     const full = s.episodes > 0 && seen >= s.episodes;
+                    const pct = s.episodes > 0 ? Math.round((seen / s.episodes) * 100) : 0;
                     return (
                       <button
                         key={s.season}
@@ -412,6 +419,11 @@ export default function TitlePage() {
                           ) : (
                             <span className="grid h-full w-full place-items-center text-xs text-muted">{s.season}</span>
                           )}
+                          {seen > 0 && (
+                            <span className="absolute inset-x-0 bottom-0 h-[3px] bg-black/60">
+                              <span className="block h-full bg-emerald-400" style={{ width: pct + "%" }} />
+                            </span>
+                          )}
                           {full && (
                             <span className="absolute right-1.5 top-1.5 grid size-5 place-items-center rounded-full bg-emerald-500 text-ink-950">
                               <Check size={12} />
@@ -427,7 +439,15 @@ export default function TitlePage() {
                             {s.year ? ` · ${s.year}` : ""}
                           </p>
                           <p className={`text-[10px] ${full || seen > 0 ? "text-emerald-400/80" : "text-muted"}`}>
-                            {full ? t("title.seasonComplete") : t("title.seasonWatched", { watched: seen })}
+                            {full ? (
+                              t("title.seasonComplete")
+                            ) : seen > 0 ? (
+                              <>
+                                {t("title.percent", { percent: pct })} · {seen}/{s.episodes}
+                              </>
+                            ) : (
+                              t("title.seasonWatched", { watched: 0 })
+                            )}
                           </p>
                         </div>
                       </button>
@@ -438,9 +458,16 @@ export default function TitlePage() {
                 {/* The episode list gets its own heading, under the season grid. */}
                 <div className="mt-10 flex flex-wrap items-baseline justify-between gap-3">
                   <h2 className="label">{t("title.episodes")}</h2>
-                  <p className="text-xs text-muted">
-                    {currentSeason?.name}
-                    {currentSeason ? " · " + t("title.seasonEpisodes", { count: currentSeason.episodes }) : ""}
+                  <p className="flex flex-wrap items-center gap-x-2 text-xs text-muted">
+                    <span>
+                      {currentSeason?.name}
+                      {currentSeason ? " · " + t("title.seasonEpisodes", { count: currentSeason.episodes }) : ""}
+                    </span>
+                    {currentSeasonPct > 0 && (
+                      <span className="rounded-full border border-emerald-400/30 bg-emerald-400/10 px-1.5 py-0.5 text-[10px] text-emerald-300">
+                        {t("title.percent", { percent: currentSeasonPct })}
+                      </span>
+                    )}
                   </p>
                 </div>
 

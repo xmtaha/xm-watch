@@ -355,13 +355,24 @@ function sortMap(sort: string): string {
 
 export async function discover(
   type: MediaType,
-  { page = 1, genre = "", sort = "popularity", year = "", rating = "", language = "" }: {
+  {
+    page = 1,
+    genre = "",
+    sort = "popularity",
+    year = "",
+    rating = "",
+    language = "",
+    runtimeGte = 0,
+    runtimeLte = 0,
+  }: {
     page?: number;
     genre?: string;
     sort?: string;
     year?: string;
     rating?: string;
     language?: string;
+    runtimeGte?: number;
+    runtimeLte?: number;
   } = {},
 ): Promise<Page<Title>> {
   const params: Params = {
@@ -371,6 +382,9 @@ export async function discover(
     "vote_average.gte": rating || undefined,
     "vote_count.gte": rating ? 60 : undefined,
     with_original_language: language || undefined,
+    // Minutes: film runtime, or episode runtime for series.
+    "with_runtime.gte": runtimeGte || undefined,
+    "with_runtime.lte": runtimeLte || undefined,
     include_adult: false,
   };
   if (year) {
